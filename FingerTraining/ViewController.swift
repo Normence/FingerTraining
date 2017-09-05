@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import AudioToolbox
+import AVFoundation
 
 class ViewController: UIViewController {
     @IBOutlet weak var timerLabel: UILabel!
@@ -31,8 +31,16 @@ class ViewController: UIViewController {
     var isTimerRuning = false
     var paused = false
     
-    let beginSoundID: SystemSoundID = 1005
-    let restSoundID: SystemSoundID = 1021
+    var beginAudioPlayer = AVAudioPlayer()
+    var restAudioPlayer = AVAudioPlayer()
+    var endAudioPlayer = AVAudioPlayer()
+    var countAudioPlayer = AVAudioPlayer()
+    var resetAudioPlayer = AVAudioPlayer()
+    let beginFileURL = URL(fileURLWithPath: "/System/Library/Audio/UISounds/Modern/sms_alert_keys.caf")
+    let restFileURL = URL(fileURLWithPath: "/System/Library/Audio/UISounds/Modern/sms_alert_circles.caf")
+    let endFileURL = URL(fileURLWithPath: "/Library/Ringtones/By The Seaside.m4r")
+    let countFileURL = URL(fileURLWithPath: "/System/Library/Audio/UISounds/SIMToolkitPositiveACK.caf")
+    let resetFileURL = URL(fileURLWithPath: "/System/Library/Audio/UISounds/Modern/sms_alert_input.caf")
     
     let mainColor = UIColor(red: 100/255, green: 103/255, blue: 108/255, alpha: 1)
     let runningColor = UIColor(red: 84/255, green: 108/255, blue: 81/255, alpha: 1)
@@ -40,7 +48,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
         seconds = SECONDS
         DispatchQueue.main.async {
             self.view.backgroundColor = self.mainColor
@@ -51,6 +59,17 @@ class ViewController: UIViewController {
             self.detailViewText.isHidden = true
             self.detailPreviewText.isHidden = true
             self.tipsViewText.isHidden = true
+        }
+        
+        // initiate audio player
+        do {
+            beginAudioPlayer = try AVAudioPlayer(contentsOf: beginFileURL)
+            restAudioPlayer = try AVAudioPlayer(contentsOf: restFileURL)
+            endAudioPlayer = try AVAudioPlayer(contentsOf: endFileURL)
+            countAudioPlayer = try AVAudioPlayer(contentsOf: countFileURL)
+            resetAudioPlayer = try AVAudioPlayer(contentsOf: resetFileURL)
+        } catch {
+            debugPrint("\(error)")
         }
     }
     
@@ -99,151 +118,154 @@ class ViewController: UIViewController {
     @objc func updateTime() {
         // 0
         if seconds == 604 {
+            countAudioPlayer.play()
             tipsViewText.text = "3"
             showSeconds = 4
         }
         if seconds == 603 {
+            countAudioPlayer.play()
             tipsViewText.text = "2"
         }
         if seconds == 602 {
+            countAudioPlayer.play()
             tipsViewText.text = "1"
         }
         if seconds == 601 {
+            beginAudioPlayer.play()
             tipsViewText.text = "开始"
         }
         // 1
         if seconds == 600 {
-            AudioServicesPlayAlertSound(beginSoundID)
             tipsViewText.text = "悬吊"
             showSeconds = 16
         }
         if seconds == 585 {
-            AudioServicesPlayAlertSound(restSoundID)
+            restAudioPlayer.play()
             tipsViewText.text = "休息"
             showSeconds = 46
         }
         // 2
         if seconds == 540 {
-            AudioServicesPlayAlertSound(beginSoundID)
+            beginAudioPlayer.play()
             tipsViewText.text = "引体"
             detailView.image = UIImage(named: "初级计划2.png")
             detailPreview.image = UIImage(named: "初级计划3.png")
             showSeconds = 11
         }
         if seconds == 530 {
-            AudioServicesPlayAlertSound(restSoundID)
+            restAudioPlayer.play()
             tipsViewText.text = "休息"
             showSeconds = 51
         }
         // 3
         if seconds == 480 {
-            AudioServicesPlayAlertSound(beginSoundID)
+            beginAudioPlayer.play()
             tipsViewText.text = "悬吊"
             detailView.image = UIImage(named: "初级计划3.png")
             detailPreview.image = UIImage(named: "初级计划4.png")
             showSeconds = 11
         }
         if seconds == 470 {
-            AudioServicesPlayAlertSound(restSoundID)
+            restAudioPlayer.play()
             tipsViewText.text = "休息"
             showSeconds = 51
         }
         // 4
         if seconds == 420 {
-            AudioServicesPlayAlertSound(beginSoundID)
+            beginAudioPlayer.play()
             tipsViewText.text = "悬吊"
             detailView.image = UIImage(named: "初级计划4.png")
             detailPreview.image = UIImage(named: "初级计划5.png")
             showSeconds = 16
         }
         if seconds == 405 {
-            AudioServicesPlayAlertSound(beginSoundID)
+            beginAudioPlayer.play()
             tipsViewText.text = "耸肩"
             showSeconds = 16
         }
         if seconds == 390 {
-            AudioServicesPlayAlertSound(restSoundID)
+            restAudioPlayer.play()
             tipsViewText.text = "休息"
             showSeconds = 31
         }
         // 5
         if seconds == 360 {
-            AudioServicesPlayAlertSound(beginSoundID)
+            beginAudioPlayer.play()
             tipsViewText.text = "悬吊"
             detailView.image = UIImage(named: "初级计划5.png")
             detailPreview.image = UIImage(named: "初级计划6.png")
             showSeconds = 21
         }
         if seconds == 340 {
-            AudioServicesPlayAlertSound(beginSoundID)
+            beginAudioPlayer.play()
             tipsViewText.text = "引体"
             showSeconds = 11
         }
         if seconds == 330 {
-            AudioServicesPlayAlertSound(restSoundID)
+            restAudioPlayer.play()
             tipsViewText.text = "休息"
             showSeconds = 31
         }
         // 6
         if seconds == 300 {
-            AudioServicesPlayAlertSound(beginSoundID)
+            beginAudioPlayer.play()
             tipsViewText.text = "悬吊"
             detailView.image = UIImage(named: "初级计划6.png")
             detailPreview.image = UIImage(named: "初级计划7.png")
             showSeconds = 11
         }
         if seconds == 290 {
-            AudioServicesPlayAlertSound(beginSoundID)
+            beginAudioPlayer.play()
             tipsViewText.text = "举膝"
             showSeconds = 21
         }
         if seconds == 270 {
-            AudioServicesPlayAlertSound(restSoundID)
+            restAudioPlayer.play()
             tipsViewText.text = "休息"
             showSeconds = 31
         }
         // 7
         if seconds == 240 {
-            AudioServicesPlayAlertSound(beginSoundID)
+            beginAudioPlayer.play()
             tipsViewText.text = "引体"
             detailView.image = UIImage(named: "初级计划7.png")
             detailPreview.image = UIImage(named: "初级计划8.png")
             showSeconds = 21
         }
         if seconds == 220 {
-            AudioServicesPlayAlertSound(restSoundID)
+            restAudioPlayer.play()
             tipsViewText.text = "休息"
             showSeconds = 41
         }
         // 8
         if seconds == 180 {
-            AudioServicesPlayAlertSound(beginSoundID)
+            beginAudioPlayer.play()
             tipsViewText.text = "悬吊"
             detailView.image = UIImage(named: "初级计划8.png")
             detailPreview.image = UIImage(named: "初级计划9.png")
             showSeconds = 11
         }
         if seconds == 170 {
-            AudioServicesPlayAlertSound(restSoundID)
+            restAudioPlayer.play()
             tipsViewText.text = "休息"
             showSeconds = 51
         }
         // 9
         if seconds == 120 {
-            AudioServicesPlayAlertSound(beginSoundID)
+            beginAudioPlayer.play()
             tipsViewText.text = "引体"
             detailView.image = UIImage(named: "初级计划9.png")
             detailPreview.image = UIImage(named: "初级计划10.png")
             showSeconds = 21
         }
         if seconds == 100 {
-            AudioServicesPlayAlertSound(restSoundID)
+            restAudioPlayer.play()
             tipsViewText.text = "休息"
             showSeconds = 41
         }
         // 10
         if seconds == 60 {
-            AudioServicesPlayAlertSound(beginSoundID)
+            beginAudioPlayer.play()
             tipsViewText.text = "悬吊"
             detailView.image = UIImage(named: "初级计划10.png")
             detailPreview.isHidden = true
@@ -252,7 +274,7 @@ class ViewController: UIViewController {
         }
         
         if seconds < 1 {
-            AudioServicesPlayAlertSound(restSoundID)
+            endAudioPlayer.play()
             StopTimer()
         } else {
             seconds -= 1
@@ -283,7 +305,7 @@ class ViewController: UIViewController {
     
     @IBAction func onPauseButtonClick(_ sender: UIButton) {
         if !paused {
-            AudioServicesPlayAlertSound(restSoundID)
+            restAudioPlayer.play()
             DispatchQueue.main.async {
                 self.view.backgroundColor = self.pauseColor
                 self.timer.invalidate()
@@ -291,7 +313,7 @@ class ViewController: UIViewController {
                 self.paused = true
             }
         } else {
-            AudioServicesPlayAlertSound(beginSoundID)
+            beginAudioPlayer.play()
             runTimer()
             DispatchQueue.main.async {
                 self.view.backgroundColor = self.runningColor
@@ -302,6 +324,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func onResetButtonClick(_ sender: UIButton) {
+        resetAudioPlayer.play()
         StopTimer()
     }
 }
