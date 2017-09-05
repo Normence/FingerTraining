@@ -43,8 +43,8 @@ class ViewController: UIViewController {
     let resetFileURL = URL(fileURLWithPath: "/System/Library/Audio/UISounds/Modern/sms_alert_input.caf")
     
     let mainColor = UIColor(red: 100/255, green: 103/255, blue: 108/255, alpha: 1)
-    let runningColor = UIColor(red: 84/255, green: 108/255, blue: 81/255, alpha: 1)
-    let pauseColor = UIColor(red: 34/255, green: 97/255, blue: 108/255, alpha: 1)
+    let runningColor = UIColor(red: 45/255, green: 104/255, blue: 121/255, alpha: 1)
+    let pauseColor = UIColor(red: 51/255, green: 115/255, blue: 94/255, alpha: 1)
     
     override func viewDidLoad() {
         super.viewDidLoad()
